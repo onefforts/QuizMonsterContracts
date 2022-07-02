@@ -8,8 +8,9 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "hardhat/console.sol";
 import "./libraries/Base64.sol";
+import "./NftStandard.sol";
 
-contract SolanoyuGame is ERC721{
+contract SolanoyuGame is ERC721, NftStandard {
     //you need to add imageURI
     // uintの最適化
     struct QuizAttributes {
@@ -24,8 +25,6 @@ contract SolanoyuGame is ERC721{
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    QuizAttributes[] defaultQuiz;
-
     mapping(uint256 => QuizAttributes) public nftHolderAttributes;
     mapping(address => uint256) public nftHolders;
 
@@ -38,6 +37,8 @@ contract SolanoyuGame is ERC721{
     
     //you need to get imageURI and mint it
     function mintQuizNFT(uint _quizIndex, string memory _title, string memory _imageURI, uint _giveUp, uint _good, uint _commentAmount) external {
+        require(quizHolder[_quizIndex] == msg.sender, "This person is not owner");
+        require(solvedAmount[_quizIndex] > 5, "No preveledge");
         uint256 newItemId = _tokenIds.current();
 
         _safeMint(msg.sender, newItemId);

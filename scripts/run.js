@@ -12,6 +12,12 @@ const main = async () => {
   console.log("Token URI:", returnedTokenUri);
   console.log("Contract deployed to:", nftGame.address);
   console.log("This is nftData:", nftData);
+  await gameContract.incrementQuiz();
+  await gameContract.incrementSolved(1);
+  await gameContract.incrementQuiz();
+  await gameContract.incrementSolved(1);
+  await gameContract.incrementQuiz();
+  await gameContract.incrementSolved(1);
 };
 
 const runMain = async () => {
